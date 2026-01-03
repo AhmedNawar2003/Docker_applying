@@ -2,6 +2,7 @@ version: "3.8"
 services:
   node-app:
     container_name: express-node-app-container
+    image: ahmednawar12/tresmerge-docker
     volumes:
       - ./src:/app/src:ro
     ports:

@@ -49,9 +49,9 @@ connectDB();
 //   .then(() => console.log("connected to db..."))
 //   .catch((err) => console.log("failed to connect to db: ", err));
 app.get("/", (req, res) => {
-  redisClient.set("products", "products");
+  redisClient.set("products", "products...");
   res.send(
-    "<h1>Hello Tresmerge! Welcome Ahmed Nawar Bro Ya Brooooo From DEV</h1>"
+    "<h1>Hello Tresmerge! From Docker Hub </h1>"
   );
 });
 
