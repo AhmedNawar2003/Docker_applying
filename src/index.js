@@ -1,7 +1,8 @@
 const express = require("express");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const redis = require("redis");
-const { Client } = require("pg");
+const os = require('os');
+// const { Client } = require("pg");
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -18,40 +19,43 @@ redisClient.connect();
 
 // connect db
 
-const DB_USER = "root";
-const DB_PASSWORD = "example";
-const DB_PORT = 5432;
-const DB_HOST = "postgres";
-
-const URI = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}`;
-
-const client = new Client({
-  connectionString: URI,
-});
-
-async function connectDB() {
-  try {
-    await client.connect();
-    console.log("connected to postgres db...");
-  } catch (err) {
-    console.error("failed to connect to postgres db:", err);
-  }
-}
-connectDB();
 // const DB_USER = "root";
 // const DB_PASSWORD = "example";
-// const DB_PORT = 27017;
-// const DB_HOST = "mongo";
+// const DB_PORT = 5432;
+// const DB_HOST = "postgres";
 
-// const URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}`;
-// mongoose
-//   .connect(URI)
-//   .then(() => console.log("connected to db..."))
-//   .catch((err) => console.log("failed to connect to db: ", err));
+// const URI = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}`;
+
+// const client = new Client({
+//   connectionString: URI,
+// });
+
+// async function connectDB() {
+//   try {
+//     await client.connect();
+//     console.log("connected to postgres db...");
+//   } catch (err) {
+//     console.error("failed to connect to postgres db:", err);
+//   }
+// }
+// connectDB();
+const DB_USER = "root";
+const DB_PASSWORD = "example";
+const DB_PORT = 27017;
+const DB_HOST = "mongo";
+
+const URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}`;
+mongoose
+  .connect(URI)
+  .then(() => console.log("connected to db..."))
+  .catch((err) => console.log("failed to connect to db: ", err));
+
+
 app.get("/", (req, res) => {
   redisClient.set("products", "products...");
+  console.log(`traffic from ${os.hostname}`);
   res.send(
-    "<h1>Hello Tresmerge! From Docker Hub </h1>"
+    "<h1>Hello Tresmerge! From Docker Hub image new </h1>"
   );
 });
 

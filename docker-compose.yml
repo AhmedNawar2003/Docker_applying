@@ -1,33 +1,36 @@
 version: "3.8"
 services:
   node-app:
-    container_name: express-node-app-container
     image: ahmednawar12/tresmerge-docker
-    volumes:
-      - ./src:/app/src:ro
-    ports:
-      - "4000:4000"
     env_file:
       - ./.env
+    deploy:
+      replicas: 4
+    update_config:
+      parallelism: 2
+      delay: 10s
+    restart_policy:
+      condition: on-failure
+      delay: 5s
     depends_on:
-      - postgres
+      - mongo
       - redis
-  postgres:
-    image: postgres
-    restart: always
-    volumes:
-      - postgres-db:/var/lib/postgresql
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: example
-  # mongo:
-  #   image: mongo
+  # postgres:
+  #   image: postgres
   #   restart: always
   #   volumes:
-  #     - mongo-db:/data/db
+  #     - postgres-db:/var/lib/postgresql
   #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #     POSTGRES_USER: root
+  #     POSTGRES_PASSWORD: example
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongo-db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
   # mongo-express:
   #   image: mongo-express
   #   restart: always
